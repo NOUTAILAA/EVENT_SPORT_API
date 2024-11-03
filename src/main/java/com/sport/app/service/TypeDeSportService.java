@@ -31,4 +31,16 @@ public class TypeDeSportService {
         TypeDeSport typeDeSport = obtenirTypeDeSport(typeDeSportId);
         return typeDeSport.estValidePourEvenement(nombreEquipes, nombreParticipants);
     }
+    public TypeDeSport mettreAJourTypeDeSport(Long id, TypeDeSport typeDeSport) {
+        // Trouver le typeDeSport existant, mettre à jour ses attributs, et le sauvegarder
+        TypeDeSport typeExistant = obtenirTypeDeSport(id);
+        if (typeExistant != null) {
+            typeExistant.setNom(typeDeSport.getNom());
+            typeExistant.setNombreEquipesMax(typeDeSport.getNombreEquipesMax());
+            typeExistant.setNombreParticipantsParEquipe(typeDeSport.getNombreParticipantsParEquipe());
+            return typeDeSportRepository.save(typeExistant);
+        }
+        return null; // Ou lancez une exception si l'objet n'existe pas
+    }
+
 }

@@ -36,7 +36,9 @@ public class Evenement {
 
     @ManyToOne
     private TypeDeSport typeDeSport;
-
+    @ManyToOne
+    @JoinColumn(name = "localisation_id")
+    private Localisation localisation;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Equipe> equipes = new ArrayList<>();
 
@@ -137,7 +139,23 @@ public class Evenement {
 	public void setEquipes(List<Equipe> equipes) {
 		this.equipes = equipes;
 	}
+	public Localisation getLocalisation() {
+        return localisation;
+    }
 
+    public void setLocalisation(Localisation localisation) {
+        this.localisation = localisation;
+    }
+	public Evenement(Long id, String nom, Date date, Organisateur organisateur, TypeDeSport typeDeSport,
+            Localisation localisation, List<Equipe> equipes) {
+this.id = id;
+this.nom = nom;
+this.date = date;
+this.organisateur = organisateur;
+this.typeDeSport = typeDeSport;
+this.localisation = localisation;
+this.equipes = equipes;
+}
 	public Evenement(Long id, String nom, Date date, Organisateur organisateur, TypeDeSport typeDeSport,
 			List<Equipe> equipes) {
 		super();
