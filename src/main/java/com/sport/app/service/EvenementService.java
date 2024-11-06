@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sport.app.entity.Equipe;
 import com.sport.app.entity.Evenement;
 import com.sport.app.entity.Participant;
 import com.sport.app.repository.EquipeRepository;
@@ -38,6 +39,10 @@ public class EvenementService {
         if (!evenement.ajouterParticipant(participant)) {
             throw new RuntimeException("L'événement est complet ou le participant ne peut pas être ajouté.");
         }
+        if (evenement.getParticipants().contains(participant)) {
+            throw new RuntimeException("Le participant est déjà inscrit à cet événement.");
+        }
+        evenement.getParticipants().add(participant);
 
         evenementRepository.save(evenement);
         return true;
@@ -52,8 +57,24 @@ public class EvenementService {
         evenement.repartirParticipantsAleatoirement(participants);
         evenementRepository.save(evenement);
     }
-
+// Hada li khdam b many to many
     public List<Evenement> obtenirTousLesEvenements() {
         return evenementRepository.findAll();
     }
+    public void ajouterParticipantEquipe(Long evenementId, Long equipeId, Long participantId) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+        Equipe equipe = equipeRepository.findById(equipeId)
+                .orElseThrow(() -> new RuntimeException("Équipe non trouvée"));
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new RuntimeException("Participant non trouvé"));
+
+        if (!equipe.getEvenement().equals(evenement)) {
+            throw new RuntimeException("L'équipe ne fait pas partie de cet événement.");
+        }
+
+        equipe.ajouterParticipant(participant);
+        equipeRepository.save(equipe);
+    }
+
 }

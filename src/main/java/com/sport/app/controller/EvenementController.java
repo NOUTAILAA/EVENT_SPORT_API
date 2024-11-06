@@ -49,4 +49,17 @@ public class EvenementController {
         List<Evenement> evenements = evenementService.obtenirTousLesEvenements();
         return new ResponseEntity<>(evenements, HttpStatus.OK);
     }
+    
+    /// hada li khdam b many to many
+    
+    @PostMapping("/{evenementId}/equipes/{equipeId}/ajouter-participant/{participantId}")
+    public ResponseEntity<String> ajouterParticipantEquipe(
+            @PathVariable Long evenementId,
+            @PathVariable Long equipeId,
+            @PathVariable Long participantId) {
+        
+        evenementService.ajouterParticipantEquipe(evenementId, equipeId, participantId);
+        return new ResponseEntity<>("Participant ajouté à l'équipe avec succès", HttpStatus.OK);
+    }
+
 }

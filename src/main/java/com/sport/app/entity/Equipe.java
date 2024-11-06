@@ -3,10 +3,12 @@ package com.sport.app.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -20,7 +22,7 @@ public class Equipe {
     @ManyToOne
     private Evenement evenement;
 
-    @OneToMany
+    @ManyToMany
     private List<Participant> participants = new ArrayList<>();
 
     public void ajouterParticipant(Participant participant) {
@@ -30,7 +32,23 @@ public class Equipe {
             throw new RuntimeException("Impossible d'ajouter le participant. Soit l'événement est null, soit l'équipe est pleine.");
         }
     }
+    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
+    private List<Resultat> resultats = new ArrayList<>();
+    public List<Resultat> getResultats() {
+        return resultats;
+    }
 
+    public void setResultats(List<Resultat> resultats) {
+        this.resultats = resultats;
+    }
+
+    public Equipe(Long id, String nom, Evenement evenement, List<Participant> participants, List<Resultat> resultats) {
+        this.id = id;
+        this.nom = nom;
+        this.evenement = evenement;
+        this.participants = participants;
+        this.resultats = resultats;
+    }
 
 	public Long getId() {
 		return id;

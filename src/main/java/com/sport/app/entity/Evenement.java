@@ -50,6 +50,19 @@ public class Evenement {
     )
     private List<Participant> participants = new ArrayList<>();
    
+    
+    
+    
+    @OneToMany(mappedBy = "evenement", cascade = CascadeType.ALL)
+    private List<Resultat> resultats = new ArrayList<>();
+
+    
+    
+    
+    
+    
+    
+    
     public boolean ajouterParticipant(Participant participant) {
         // Vérifier si le nombre maximum d'équipes a été atteint
         if (equipes.size() >= typeDeSport.getNombreEquipesMax()) {
@@ -168,4 +181,11 @@ this.equipes = equipes;
 	}
 public Evenement() {}
     // Getters and Setters
+public List<Resultat> getResultats() {
+    return resultats;
+}
+
+public void setResultats(List<Resultat> resultats) {
+    this.resultats = resultats;
+}
 }
