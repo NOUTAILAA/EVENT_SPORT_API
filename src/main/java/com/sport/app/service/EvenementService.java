@@ -76,5 +76,9 @@ public class EvenementService {
         equipe.ajouterParticipant(participant);
         equipeRepository.save(equipe);
     }
+    public Evenement obtenirEvenementParId(Long id) {
+        return evenementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+    }
 
 }

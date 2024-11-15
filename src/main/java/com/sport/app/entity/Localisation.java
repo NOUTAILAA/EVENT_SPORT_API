@@ -15,7 +15,8 @@ public class Localisation {
     private String adresse;
     private String ville;
     private String pays;
-
+    private double latitude;
+    private double longitude;
     // Constructors
     public Localisation() {}
 
@@ -25,8 +26,23 @@ public class Localisation {
         this.ville = ville;
         this.pays = pays;
     }
+    public double getLongitude() {
+        return longitude;
+    }
 
-    // Getters and Setters
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+    
+    public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	// Getters and Setters
     public Long getId() {
         return id;
     }

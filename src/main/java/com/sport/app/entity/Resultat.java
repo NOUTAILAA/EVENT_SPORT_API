@@ -1,3 +1,4 @@
+
 package com.sport.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -11,27 +12,28 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 @JsonIdentityInfo(
-		  generator = ObjectIdGenerators.PropertyGenerator.class, 
-		  property = "id")
-
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "id"
+)
 public class Resultat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int nombreButs; // Nombre de buts (ou temps pour le marathon)
+    private int nombreButs; // Nombre de buts pour les sports comme le football
 
-    private double temps; // Temps réalisé pour les sports comme le marathon (heures, minutes, secondes)
-
-    @ManyToOne
-    private Equipe equipe; // Cas pour les sports d'équipe
+    private Double temps; // Temps réalisé pour les sports comme le marathon, nullable
 
     @ManyToOne
-    private Participant participant; // Cas pour les sports individuels
+    private Equipe equipe; // L'équipe concernée par le résultat
 
     @ManyToOne
-    private Evenement evenement;
+    private Participant participant; // Le participant concerné par le résultat
 
+    @ManyToOne
+    private Evenement evenement; // L'événement associé au résultat
+
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -48,11 +50,11 @@ public class Resultat {
         this.nombreButs = nombreButs;
     }
 
-    public double getTemps() {
+    public Double getTemps() {
         return temps;
     }
 
-    public void setTemps(double temps) {
+    public void setTemps(Double temps) {
         this.temps = temps;
     }
 
@@ -82,6 +84,15 @@ public class Resultat {
 
     public Resultat() {}
 
+    public Resultat(int nombreButs, Double temps, Equipe equipe, Participant participant, Evenement evenement) {
+        this.nombreButs = nombreButs;
+        this.temps = temps;
+        this.equipe = equipe;
+        this.participant = participant;
+        this.evenement = evenement;
+    }
+    
+
     public Resultat(int nombreButs, double temps, Equipe equipe, Participant participant, Evenement evenement) {
         this.nombreButs = nombreButs;
         this.temps = temps;
@@ -90,3 +101,4 @@ public class Resultat {
         this.evenement = evenement;
     }
 }
+

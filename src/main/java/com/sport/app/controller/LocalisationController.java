@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/localisations")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LocalisationController {
 
     @Autowired
@@ -48,6 +49,8 @@ public class LocalisationController {
             localisation.setAdresse(localisationDetails.getAdresse());
             localisation.setVille(localisationDetails.getVille());
             localisation.setPays(localisationDetails.getPays());
+            localisation.setLatitude(localisationDetails.getLatitude());  // Correct
+            localisation.setLongitude(localisationDetails.getLongitude()); // Correct
             Localisation updatedLocalisation = localisationService.saveLocalisation(localisation);
             return new ResponseEntity<>(updatedLocalisation, HttpStatus.OK);
         } else {

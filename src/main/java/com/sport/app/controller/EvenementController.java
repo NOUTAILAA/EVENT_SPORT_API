@@ -61,5 +61,11 @@ public class EvenementController {
         evenementService.ajouterParticipantEquipe(evenementId, equipeId, participantId);
         return new ResponseEntity<>("Participant ajouté à l'équipe avec succès", HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Evenement> obtenirEvenementParId(@PathVariable Long id) {
+        Evenement evenement = evenementService.obtenirEvenementParId(id);
+        return new ResponseEntity<>(evenement, HttpStatus.OK);
+    }
+
 
 }
