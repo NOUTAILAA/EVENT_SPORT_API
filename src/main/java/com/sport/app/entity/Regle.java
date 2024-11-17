@@ -16,7 +16,14 @@ public class Regle {
     @JsonIgnore
     private List<TypeDeSport> typesDeSport;
 
-    public Regle() {}
+    public Regle(Long id, String description, List<TypeDeSport> typesDeSport) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.typesDeSport = typesDeSport;
+	}
+
+	public Regle() {}
 
     public Regle(Long id, String description) {
         this.id = id;
