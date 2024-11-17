@@ -1,9 +1,8 @@
 package com.sport.app.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class TypeDeSport {
@@ -13,7 +12,16 @@ public class TypeDeSport {
     private String nom;
     private int nombreEquipesMax;
     private int nombreParticipantsParEquipe;
-    
+	@ManyToMany
+	@JoinTable(
+			name = "type_sport_regle",
+			joinColumns = @JoinColumn(name = "type_sport_id"),
+			inverseJoinColumns = @JoinColumn(name = "regle_id")
+	)
+	private List<Regle> regles;
+
+
+
     public boolean estValidePourEvenement(int nombreEquipes, int nombreParticipants) {
         return nombreEquipes <= nombreEquipesMax && nombreParticipants <= nombreParticipantsParEquipe;
     }
@@ -58,5 +66,12 @@ public class TypeDeSport {
 		this.nombreParticipantsParEquipe = nombreParticipantsParEquipe;
 	}
     public TypeDeSport() {}
-}
 
+	public List<Regle> getRegles() {
+		return regles;
+	}
+
+	public void setRegles(List<Regle> regles) {
+		this.regles = regles;
+	}
+}

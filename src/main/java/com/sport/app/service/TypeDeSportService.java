@@ -32,15 +32,25 @@ public class TypeDeSportService {
         return typeDeSport.estValidePourEvenement(nombreEquipes, nombreParticipants);
     }
     public TypeDeSport mettreAJourTypeDeSport(Long id, TypeDeSport typeDeSport) {
-        // Trouver le typeDeSport existant, mettre à jour ses attributs, et le sauvegarder
+        // Trouver le typeDeSport existant
         TypeDeSport typeExistant = obtenirTypeDeSport(id);
+
         if (typeExistant != null) {
+            // Mettre à jour les attributs de base
             typeExistant.setNom(typeDeSport.getNom());
             typeExistant.setNombreEquipesMax(typeDeSport.getNombreEquipesMax());
             typeExistant.setNombreParticipantsParEquipe(typeDeSport.getNombreParticipantsParEquipe());
+
+            // Mettre à jour les règles
+            typeExistant.getRegles().clear(); // Supprimer les anciennes règles
+            typeExistant.getRegles().addAll(typeDeSport.getRegles()); // Ajouter les nouvelles règles
+
+            // Sauvegarder et retourner le type mis à jour
             return typeDeSportRepository.save(typeExistant);
+        } else {
+            throw new RuntimeException("Type de sport non trouvé");
         }
-        return null; // Ou lancez une exception si l'objet n'existe pas
     }
+
 
 }

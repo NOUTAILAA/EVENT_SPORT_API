@@ -1,5 +1,6 @@
 package com.sport.app.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sport.app.entity.Equipe;
 import com.sport.app.entity.Evenement;
 import com.sport.app.entity.Participant;
+import com.sport.app.entity.Promotion;
 import com.sport.app.repository.EquipeRepository;
 import com.sport.app.repository.EvenementRepository;
 import com.sport.app.repository.ParticipantRepository;
@@ -76,9 +78,51 @@ public class EvenementService {
         equipe.ajouterParticipant(participant);
         equipeRepository.save(equipe);
     }
-    public Evenement obtenirEvenementParId(Long id) {
-        return evenementRepository.findById(id)
+    public Evenement obtenirEvenementParIdAvecPrix(Long id) {
+        Evenement evenement = evenementRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+        
+        double prixAvecPromotion = calculerPrixAvecPromotion(evenement);
+        evenement.setPrix(prixAvecPromotion); // Met à jour le prix avec le prix final
+
+        return evenement;
     }
 
+    public double calculerPrixAvecPromotion(Evenement evenement) {
+        if (evenement.getPromotions() == null || evenement.getPromotions().isEmpty()) {
+            return evenement.getPrix();
+        }
+
+        double prixFinal = evenement.getPrix();
+        for (Promotion promo : evenement.getPromotions()) {
+            if (promo.getValidUntil().after(new Date())) {
+                prixFinal -= prixFinal * (promo.getDiscountPercentage() / 100);
+            }
+        }
+        return prixFinal;
+    }
+    
+    
+    
+    // hada howa dial api /liste
+    public List<Evenement> obtenirTousLesEvenementsAvecPrix() {
+        List<Evenement> evenements = evenementRepository.findAll();
+        for (Evenement evenement : evenements) {
+            double prixAvecPromotion = calculerPrixAvecPromotion(evenement);
+            evenement.setPrix(prixAvecPromotion); // Met à jour le prix dans l'objet
+        }
+        return evenements;
+    }
+
+    // Méthode pour trouver un événement par ID
+    public Evenement findEventById(Long eventId) {
+        return evenementRepository.findById(eventId).orElse(null);
+    }
+
+    // Méthode pour sauvegarder ou mettre à jour un événement
+    public Evenement saveEvenement(Evenement evenement) {
+        return evenementRepository.save(evenement);
+    }
+
+    
 }

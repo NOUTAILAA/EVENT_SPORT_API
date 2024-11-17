@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sport.app.entity.Evenement;
+import com.sport.app.entity.Promotion;
 import com.sport.app.service.EvenementService;
+import com.sport.app.service.services.PromotionService;
 
 @RestController
 @RequestMapping("/evenements")
@@ -21,6 +23,8 @@ public class EvenementController {
 
     @Autowired
     private EvenementService evenementService;
+    @Autowired
+    private PromotionService promotionService;
 
     @PostMapping("/creer")
     public ResponseEntity<Evenement> creerEvenement(@RequestBody Evenement evenement) {
@@ -46,10 +50,10 @@ public class EvenementController {
 
     @GetMapping("/liste")
     public ResponseEntity<List<Evenement>> obtenirTousLesEvenements() {
-        List<Evenement> evenements = evenementService.obtenirTousLesEvenements();
+        List<Evenement> evenements = evenementService.obtenirTousLesEvenementsAvecPrix();
         return new ResponseEntity<>(evenements, HttpStatus.OK);
     }
-    
+
     /// hada li khdam b many to many
     
     @PostMapping("/{evenementId}/equipes/{equipeId}/ajouter-participant/{participantId}")
@@ -61,10 +65,41 @@ public class EvenementController {
         evenementService.ajouterParticipantEquipe(evenementId, equipeId, participantId);
         return new ResponseEntity<>("Participant ajouté à l'équipe avec succès", HttpStatus.OK);
     }
+    
+    
+    
     @GetMapping("/{id}")
     public ResponseEntity<Evenement> obtenirEvenementParId(@PathVariable Long id) {
-        Evenement evenement = evenementService.obtenirEvenementParId(id);
+        Evenement evenement = evenementService.obtenirEvenementParIdAvecPrix(id);
         return new ResponseEntity<>(evenement, HttpStatus.OK);
+    } 
+    // un evenement avec le prix par exemple de 120 dh et le piurcentage de code promo est 20 docn il doit s'afficher 96 
+    @PostMapping("/{eventId}/apply-promo")
+    public ResponseEntity<Evenement> applyPromoCode(@PathVariable Long eventId, @RequestBody String promoCode) {
+        System.out.println("Tentative d'application du code promo: " + promoCode);
+
+        Evenement event = evenementService.findEventById(eventId);
+        if (event == null) {
+            System.out.println("Événement non trouvé pour l'ID: " + eventId);
+            return ResponseEntity.notFound().build();
+        }
+
+        Promotion promotion = promotionService.findByCode(promoCode);
+        if (promotion == null) {
+            System.out.println("Code promo invalide: " + promoCode);
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Calcul du prix avec réduction
+        double discount = promotion.getDiscountPercentage() / 100.0;
+        double newPrice = event.getPrix() * (1 - discount);
+        event.setPrix(newPrice);
+
+        // Sauvegarde de l'événement avec le nouveau prix
+        evenementService.saveEvenement(event);
+        System.out.println("Prix de l'événement après application de la promotion: " + event.getPrix());
+
+        return ResponseEntity.ok(event);
     }
 
 
