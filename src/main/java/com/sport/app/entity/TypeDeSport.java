@@ -66,6 +66,18 @@ public class TypeDeSport {
 		this.nombreParticipantsParEquipe = nombreParticipantsParEquipe;
 	}
     public TypeDeSport() {}
+<<<<<<< HEAD
+=======
+
+	public List<Regle> getRegles() {
+		return regles;
+	}
+
+	public void setRegles(List<Regle> regles) {
+		this.regles = regles;
+	}
+}
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 	public List<Regle> getRegles() {
 		return regles;

@@ -1,5 +1,6 @@
 package com.sport.app.entity;
 
+<<<<<<< HEAD
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+=======
+import jakarta.persistence.*;
+import java.util.Date;
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 @Entity
 public class Promotion {
@@ -19,9 +24,14 @@ public class Promotion {
     private String code;
     private Double discountPercentage;
     private Date validUntil;
+<<<<<<< HEAD
     @ManyToMany(mappedBy = "promotions")
     private List<Evenement> evenements;
 public Promotion (){}
+=======
+
+    // Getters and Setters
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
     public Long getId() {
         return id;
     }
@@ -53,6 +63,7 @@ public Promotion (){}
     public void setValidUntil(Date validUntil) {
         this.validUntil = validUntil;
     }
+<<<<<<< HEAD
     public List<Evenement> getEvenements() {
         return evenements;
     }
@@ -67,3 +78,6 @@ public Promotion (){}
 
 
 }
+=======
+}
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec

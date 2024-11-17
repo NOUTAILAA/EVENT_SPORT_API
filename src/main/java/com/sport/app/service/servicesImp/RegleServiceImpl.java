@@ -1,5 +1,6 @@
 package com.sport.app.service.servicesImp;
 
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,15 @@ import org.springframework.stereotype.Service;
 import com.sport.app.entity.Regle;
 import com.sport.app.repository.RegleRepository;
 import com.sport.app.service.services.RegleService;
+=======
+import com.sport.app.entity.Regle;
+import com.sport.app.repository.RegleRepository;
+import com.sport.app.service.services.RegleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 @Service
 public class RegleServiceImpl implements RegleService {
@@ -51,4 +61,8 @@ public class RegleServiceImpl implements RegleService {
     public void deleteRegle(Long id) {
         regleRepository.deleteById(id);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
