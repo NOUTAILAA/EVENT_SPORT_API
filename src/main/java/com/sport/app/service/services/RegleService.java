@@ -9,8 +9,4 @@ public interface RegleService {
     Regle createRegle(Regle regle);
     Regle updateRegle(Long id, Regle regle);
     void deleteRegle(Long id);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec

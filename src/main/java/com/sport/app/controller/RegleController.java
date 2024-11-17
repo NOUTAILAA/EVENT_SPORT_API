@@ -1,6 +1,5 @@
 package com.sport.app.controller;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sport.app.entity.Regle;
 import com.sport.app.service.services.RegleService;
-=======
-import com.sport.app.entity.Regle;
-import com.sport.app.service.services.RegleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 @RestController
 @RequestMapping("/api/regles")
@@ -61,8 +52,4 @@ public class RegleController {
     public void deleteRegle(@PathVariable Long id) {
         regleService.deleteRegle(id);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec

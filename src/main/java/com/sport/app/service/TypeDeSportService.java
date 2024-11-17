@@ -52,9 +52,4 @@ public class TypeDeSportService {
         }
     }
 
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec

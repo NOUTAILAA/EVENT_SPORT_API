@@ -1,6 +1,5 @@
 package com.sport.app.controller;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sport.app.entity.Promotion;
 import com.sport.app.service.services.PromotionService;
-=======
-import com.sport.app.entity.Promotion;
-import com.sport.app.service.services.PromotionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 @RestController
 @RequestMapping("/api/promotions")
@@ -49,7 +40,6 @@ public class PromotionController {
         return promotionService.getPromotionById(id);
     }
 
-<<<<<<< HEAD
   
     @PostMapping("/create")
     public ResponseEntity<String> createPromotion(@RequestBody Promotion promotion) {
@@ -59,13 +49,6 @@ public class PromotionController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } }
-=======
-    @PostMapping
-    public Promotion createPromotion(@RequestBody Promotion promotion) {
-        return promotionService.createPromotion(promotion);
-    }
-
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
     @PutMapping("/{id}")
     public Promotion updatePromotion(@PathVariable Long id, @RequestBody Promotion promotion) {
         return promotionService.updatePromotion(id, promotion);
@@ -75,8 +58,4 @@ public class PromotionController {
     public void deletePromotion(@PathVariable Long id) {
         promotionService.deletePromotion(id);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec

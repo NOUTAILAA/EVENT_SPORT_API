@@ -1,6 +1,5 @@
 package com.sport.app.service.servicesImp;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +8,6 @@ import org.springframework.stereotype.Service;
 import com.sport.app.entity.Promotion;
 import com.sport.app.repository.PromotionRepository;
 import com.sport.app.service.services.PromotionService;
-=======
-import com.sport.app.entity.Promotion;
-import com.sport.app.repository.PromotionRepository;
-import com.sport.app.service.services.PromotionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
 
 @Service
 public class PromotionServiceImpl implements PromotionService {
@@ -40,17 +30,12 @@ public class PromotionServiceImpl implements PromotionService {
                 .orElseThrow(() -> new RuntimeException("Promotion not found with id: " + id));
     }
 
-<<<<<<< HEAD
     public Promotion createPromotion(Promotion promotion) {
         // Vérifier si un code promo identique existe déjà
         if (promotionRepository.existsByCode(promotion.getCode())) {
             throw new RuntimeException("Le code promo existe déjà.");
         }
         
-=======
-    @Override
-    public Promotion createPromotion(Promotion promotion) {
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
         return promotionRepository.save(promotion);
     }
 
@@ -70,13 +55,9 @@ public class PromotionServiceImpl implements PromotionService {
         }
         promotionRepository.deleteById(id);
     }
-<<<<<<< HEAD
     
     @Override
     public Promotion findByCode(String code) {
         return promotionRepository.findByCode(code);
     }
 }
-=======
-}
->>>>>>> c8da34cd386035dbbdeb50b338b01bc9e988acec
