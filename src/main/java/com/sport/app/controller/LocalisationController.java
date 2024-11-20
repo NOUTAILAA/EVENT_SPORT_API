@@ -18,14 +18,14 @@ public class LocalisationController {
     @Autowired
     private LocalisationService localisationService;
 
-    // Endpoint to get all localisations
+    //get all localisations
     @GetMapping
     public ResponseEntity<List<Localisation>> getAllLocalisations() {
         List<Localisation> localisations = localisationService.getAllLocalisations();
         return new ResponseEntity<>(localisations, HttpStatus.OK);
     }
 
-    // Endpoint to get a localisation by ID
+    //get a localisation by ID
     @GetMapping("/{id}")
     public ResponseEntity<Localisation> getLocalisationById(@PathVariable Long id) {
         Optional<Localisation> localisation = localisationService.getLocalisationById(id);
@@ -33,14 +33,14 @@ public class LocalisationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint to create a new localisation
+    //create a new localisation
     @PostMapping
     public ResponseEntity<Localisation> createLocalisation(@RequestBody Localisation localisation) {
         Localisation newLocalisation = localisationService.saveLocalisation(localisation);
         return new ResponseEntity<>(newLocalisation, HttpStatus.CREATED);
     }
 
-    // Endpoint to update an existing localisation
+    //update an existing localisation
     @PutMapping("/{id}")
     public ResponseEntity<Localisation> updateLocalisation(@PathVariable Long id, @RequestBody Localisation localisationDetails) {
         Optional<Localisation> localisationOptional = localisationService.getLocalisationById(id);
@@ -58,7 +58,7 @@ public class LocalisationController {
         }
     }
 
-    // Endpoint to delete a localisation
+    //delete a localisation
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteLocalisation(@PathVariable Long id) {
         localisationService.deleteLocalisation(id);

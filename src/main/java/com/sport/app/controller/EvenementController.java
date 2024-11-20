@@ -25,13 +25,13 @@ public class EvenementController {
     private EvenementService evenementService;
     @Autowired
     private PromotionService promotionService;
-
+// CREER EVENT
     @PostMapping("/creer")
     public ResponseEntity<Evenement> creerEvenement(@RequestBody Evenement evenement) {
         Evenement nouvelEvenement = evenementService.creerEvenement(evenement);
         return new ResponseEntity<>(nouvelEvenement, HttpStatus.CREATED);
     }
-
+// POUR AJOUTER DES PARTICIPANTS A DES EVENEMENTS
     @PostMapping("/{evenementId}/inscrire/{participantId}")
     public ResponseEntity<String> inscrireParticipant(@PathVariable Long evenementId, @PathVariable Long participantId) {
         boolean inscrit = evenementService.inscrireParticipant(evenementId, participantId);
@@ -41,13 +41,13 @@ public class EvenementController {
             return new ResponseEntity<>("Échec de l'inscription", HttpStatus.BAD_REQUEST);
         }
     }
-
+// LES EQUIPES ALEATOIIRESSS ( facultatif)
     @PostMapping("/{evenementId}/repartir")
     public ResponseEntity<String> repartirParticipantsAleatoirement(@PathVariable Long evenementId) {
         evenementService.repartirParticipantsAleatoirement(evenementId);
         return new ResponseEntity<>("Participants répartis aléatoirement", HttpStatus.OK);
     }
-
+// LISTER TOUS LES EVENEMENTS
     @GetMapping("/liste")
     public ResponseEntity<List<Evenement>> obtenirTousLesEvenements() {
         List<Evenement> evenements = evenementService.obtenirTousLesEvenementsAvecPrix();

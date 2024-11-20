@@ -21,8 +21,12 @@ public class ClassementController {
 
     @Autowired
     private ClassementService classementService;
-
-    // Get classements by event
+    // AFFICHAGE GLOBALEEEEE DES CLASSEMENTS SELON LE TYPE DE SPORT 
+    @GetMapping("/typeSportId/{typeSportId}/classementGlobal")
+    public List<Object> getGlobalClassementsByTypeSportId(@PathVariable Long typeSportId) {
+        return classementService.getClassementGlobalParTypeDeSportId(typeSportId);
+    }
+    // CLASSEMENET SELON LES EVENEMENTS
     @GetMapping("/evenement/{evenementId}")
     public List<Classement> getClassementsByEvenement(@PathVariable Long evenementId) {
         return classementService.findByEvenement(evenementId);
@@ -33,28 +37,28 @@ public class ClassementController {
     public Classement addClassement(@RequestBody Classement classement) {
         return classementService.saveClassement(classement);
     }
+    
     @GetMapping("/evenement/sorted/{evenementId}")
     public List<Classement> getSortedClassementsByEvenement(@PathVariable Long evenementId) {
         return classementService.findClassementsByEvenementSorted(evenementId);
     }
-    // HADA HOWA LI SIMPLIFIé
-    @GetMapping("/classement/evenement/{evenementId}/simple")
+    
+    // HADA HOWA LI SIMPLIFIé HOWA LI KHDAAAAAM
+    @GetMapping("/evenement/{evenementId}/simple")
     public List<ClassementSimple> getSimpleClassementByEvenement(@PathVariable Long evenementId) {
         return classementService.getSimpleClassementByEvenement(evenementId);
     }
+    
     @GetMapping("/evenement/sortedByButs/{evenementId}")
     public List<Classement> getSortedByButsClassementsByEvenement(@PathVariable Long evenementId) {
         return classementService.findClassementsByEvenementSortedByButs(evenementId);
     }
-    ///// HADA SIMPLIFIé
+    ///// HADA SIMPLIFIé HOWA LI KHDAAAAAAM
     @GetMapping("/evenement/simplifiedTeams/{evenementId}")
     public List<ClassementEquipeSimple> getSimpleTeamClassementsByEvenement(@PathVariable Long evenementId) {
         return classementService.getSimpleClassementEquipeByEvenement(evenementId);
     }
-    @GetMapping("/typeSportId/{typeSportId}/classementGlobal")
-    public List<Object> getGlobalClassementsByTypeSportId(@PathVariable Long typeSportId) {
-        return classementService.getClassementGlobalParTypeDeSportId(typeSportId);
-    }
+   
 
 
 }

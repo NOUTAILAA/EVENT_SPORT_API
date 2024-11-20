@@ -59,6 +59,8 @@ public class EvenementService {
         evenement.repartirParticipantsAleatoirement(participants);
         evenementRepository.save(evenement);
     }
+    
+    
 // Hada li khdam b many to many
     public List<Evenement> obtenirTousLesEvenements() {
         return evenementRepository.findAll();
