@@ -1,6 +1,5 @@
 package com.sport.app.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.sport.app.entity.Equipe;
 import com.sport.app.entity.Evenement;
 import com.sport.app.entity.Participant;
+import com.sport.app.entity.Promotion;
 import com.sport.app.repository.EquipeRepository;
 import com.sport.app.repository.EvenementRepository;
 import com.sport.app.repository.ParticipantRepository;
+import com.sport.app.repository.PromotionRepository;
 
 @Service
 public class EvenementService {
@@ -24,6 +25,10 @@ public class EvenementService {
 
     @Autowired
     private EquipeRepository equipeRepository;
+    @Autowired
+    private PromotionRepository promotionRepository;
+
+
 
     public Evenement creerEvenement(Evenement evenement) {
         // Logique de création de l'événement

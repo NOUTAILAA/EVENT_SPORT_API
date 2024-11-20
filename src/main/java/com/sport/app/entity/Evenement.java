@@ -59,7 +59,23 @@ public class Evenement {
 
     
     
-    
+    @ManyToMany
+    @JoinTable(
+        name = "evenement_promotion",
+        joinColumns = @JoinColumn(name = "evenement_id"),
+        inverseJoinColumns = @JoinColumn(name = "promotion_id")
+    )
+    private List<Promotion> promotions = new ArrayList<>();
+    // Autres champs et méthodes...
+
+    public List<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(List<Promotion> promotions) {
+        this.promotions = promotions;
+    }
+
 
     
     
@@ -180,6 +196,23 @@ this.equipes = equipes;
 		this.equipes = equipes;
 	}
 	
+public Evenement(Long id, String nom, Date date, Double prix, Organisateur organisateur, TypeDeSport typeDeSport,
+			Localisation localisation, List<Equipe> equipes, List<Participant> participants, List<Resultat> resultats,
+			List<Promotion> promotions) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.date = date;
+		this.prix = prix;
+		this.organisateur = organisateur;
+		this.typeDeSport = typeDeSport;
+		this.localisation = localisation;
+		this.equipes = equipes;
+		this.participants = participants;
+		this.resultats = resultats;
+		this.promotions = promotions;
+	}
+
 public Evenement(Long id, String nom, Date date, Double prix, Organisateur organisateur, TypeDeSport typeDeSport,
 			Localisation localisation, List<Equipe> equipes, List<Participant> participants, List<Resultat> resultats) {
 		super();
