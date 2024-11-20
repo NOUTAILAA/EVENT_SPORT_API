@@ -60,23 +60,7 @@ public class Evenement {
     
     
     
-    @ManyToMany
-    @JoinTable(
-        name = "evenement_promotion",
-        joinColumns = @JoinColumn(name = "evenement_id"),
-        inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private List<Promotion> promotions;
 
-   
-    public List<Promotion> getPromotions() {
-        return promotions;
-    }
-
-    public void setPromotions(List<Promotion> promotions) {
-        this.promotions = promotions;
-    }
-    
     
     
     public boolean ajouterParticipant(Participant participant) {
@@ -197,8 +181,7 @@ this.equipes = equipes;
 	}
 	
 public Evenement(Long id, String nom, Date date, Double prix, Organisateur organisateur, TypeDeSport typeDeSport,
-			Localisation localisation, List<Equipe> equipes, List<Participant> participants, List<Resultat> resultats,
-			List<Promotion> promotions) {
+			Localisation localisation, List<Equipe> equipes, List<Participant> participants, List<Resultat> resultats) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -210,7 +193,6 @@ public Evenement(Long id, String nom, Date date, Double prix, Organisateur organ
 		this.equipes = equipes;
 		this.participants = participants;
 		this.resultats = resultats;
-		this.promotions = promotions;
 	}
 
 public Evenement() {}
@@ -232,17 +214,6 @@ public void setPrix(Double prix) {
 
 
 
-public Double getPrixAvecPromotion() {
-    if (promotions == null || promotions.isEmpty()) {
-        return prix;
-    }
-    double prixFinal = prix;
-    for (Promotion promo : promotions) {
-        if (promo.getValidUntil().after(new Date())) { // Vérifie si la promotion est encore valide
-            prixFinal -= prixFinal * (promo.getDiscountPercentage() / 100);
-        }
-    }
-    return prixFinal;
-}
+
 
 }

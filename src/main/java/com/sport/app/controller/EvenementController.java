@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sport.app.entity.Evenement;
-import com.sport.app.entity.Promotion;
 import com.sport.app.service.EvenementService;
-import com.sport.app.service.services.PromotionService;
 
 @RestController
 @RequestMapping("/evenements")
@@ -23,9 +21,7 @@ public class EvenementController {
 
     @Autowired
     private EvenementService evenementService;
-    @Autowired
-    private PromotionService promotionService;
-// CREER EVENT
+    // CREER EVENT
     @PostMapping("/creer")
     public ResponseEntity<Evenement> creerEvenement(@RequestBody Evenement evenement) {
         Evenement nouvelEvenement = evenementService.creerEvenement(evenement);
@@ -50,7 +46,7 @@ public class EvenementController {
 // LISTER TOUS LES EVENEMENTS
     @GetMapping("/liste")
     public ResponseEntity<List<Evenement>> obtenirTousLesEvenements() {
-        List<Evenement> evenements = evenementService.obtenirTousLesEvenementsAvecPrix();
+        List<Evenement> evenements = evenementService.obtenirTousLesEvenements();
         return new ResponseEntity<>(evenements, HttpStatus.OK);
     }
 
@@ -70,37 +66,12 @@ public class EvenementController {
     
     @GetMapping("/{id}")
     public ResponseEntity<Evenement> obtenirEvenementParId(@PathVariable Long id) {
-        Evenement evenement = evenementService.obtenirEvenementParIdAvecPrix(id);
+        Evenement evenement = evenementService.findEventById(id);
         return new ResponseEntity<>(evenement, HttpStatus.OK);
     } 
-    // un evenement avec le prix par exemple de 120 dh et le piurcentage de code promo est 20 docn il doit s'afficher 96 
-    @PostMapping("/{eventId}/apply-promo")
-    public ResponseEntity<Evenement> applyPromoCode(@PathVariable Long eventId, @RequestBody String promoCode) {
-        System.out.println("Tentative d'application du code promo: " + promoCode);
 
-        Evenement event = evenementService.findEventById(eventId);
-        if (event == null) {
-            System.out.println("Événement non trouvé pour l'ID: " + eventId);
-            return ResponseEntity.notFound().build();
-        }
 
-        Promotion promotion = promotionService.findByCode(promoCode);
-        if (promotion == null) {
-            System.out.println("Code promo invalide: " + promoCode);
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        // Calcul du prix avec réduction
-        double discount = promotion.getDiscountPercentage() / 100.0;
-        double newPrice = event.getPrix() * (1 - discount);
-        event.setPrix(newPrice);
-
-        // Sauvegarde de l'événement avec le nouveau prix
-        evenementService.saveEvenement(event);
-        System.out.println("Prix de l'événement après application de la promotion: " + event.getPrix());
-
-        return ResponseEntity.ok(event);
-    }
+ 
 
 
 }
