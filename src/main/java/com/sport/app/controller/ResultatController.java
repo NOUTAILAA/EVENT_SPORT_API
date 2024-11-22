@@ -14,7 +14,7 @@ public class ResultatController {
     @Autowired
     private ResultatService resultatService;
 
-    // Ajouter un résultat pour une équipe
+    // Ajouter un résultat pour une équipe 
     @PostMapping("/ajouter/equipe")
     public Resultat ajouterResultatEquipe(
             @RequestParam Long evenementId,

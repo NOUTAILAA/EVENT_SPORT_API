@@ -40,12 +40,7 @@ public class EvenementController {
             return new ResponseEntity<>("Échec de l'inscription", HttpStatus.BAD_REQUEST);
         }
     }
-// LES EQUIPES ALEATOIIRESSS ( facultatif)
-    @PostMapping("/{evenementId}/repartir")
-    public ResponseEntity<String> repartirParticipantsAleatoirement(@PathVariable Long evenementId) {
-        evenementService.repartirParticipantsAleatoirement(evenementId);
-        return new ResponseEntity<>("Participants répartis aléatoirement", HttpStatus.OK);
-    }
+
 // LISTER TOUS LES EVENEMENTS pour admin
     @GetMapping("/liste")
     public ResponseEntity<List<Evenement>> obtenirTousLesEvenements() {
@@ -53,8 +48,7 @@ public class EvenementController {
         return new ResponseEntity<>(evenements, HttpStatus.OK);
     }
 
-    /// hada li khdam b many to many
-    
+    /// cas de many to many 
     @PostMapping("/{evenementId}/equipes/{equipeId}/ajouter-participant/{participantId}")
     public ResponseEntity<String> ajouterParticipantEquipe(
             @PathVariable Long evenementId,
@@ -74,7 +68,7 @@ public class EvenementController {
     } 
 
  
-    // ceci affichera pour chaque participant connectés les evenements avec leur prix apres reduction
+    // ceci affichera pour chaque participant connecté les evenements avec leur prix apres reduction ===> donc on doit utiliser ceci pour afficher la liste des evenements participés pour le participant
     
     @GetMapping("/prixReduits")
     public ResponseEntity<List<Map<String, Object>>> getEvenementsAvecPrixReduits(@RequestParam Long participantId) {
@@ -87,5 +81,10 @@ public class EvenementController {
     }
  
 
-
+ // LES EQUIPES ALEATOIIRESSS ( facultatif càd qu'on peut ne pas l'utiliser)
+    @PostMapping("/{evenementId}/repartir")
+    public ResponseEntity<String> repartirParticipantsAleatoirement(@PathVariable Long evenementId) {
+        evenementService.repartirParticipantsAleatoirement(evenementId);
+        return new ResponseEntity<>("Participants répartis aléatoirement", HttpStatus.OK);
+    }
 }

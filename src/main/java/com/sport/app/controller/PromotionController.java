@@ -44,6 +44,7 @@ public class PromotionController {
         List<Promotion> promotions = promotionService.obtenirTousLesPromotions();
         return ResponseEntity.ok(promotions);
     }
+   // cet endpoint qui permet a un participant de saisir un code promo pour un evenement
     @PostMapping("/appliquer")
     public ResponseEntity<Double> appliquerPromotion(
             @RequestParam Long evenementId,

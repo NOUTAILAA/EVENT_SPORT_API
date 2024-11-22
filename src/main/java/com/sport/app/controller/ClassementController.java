@@ -21,6 +21,17 @@ public class ClassementController {
 
     @Autowired
     private ClassementService classementService;
+    
+    ///// Affichage de clssement de tous les evenements
+    @GetMapping("/evenement/simplifiedTeams/{evenementId}")
+    public List<ClassementEquipeSimple> getSimpleTeamClassementsByEvenement(@PathVariable Long evenementId) {
+        return classementService.getSimpleClassementEquipeByEvenement(evenementId);
+    }
+ // Add classement
+    @PostMapping("/add")
+    public Classement addClassement(@RequestBody Classement classement) {
+        return classementService.saveClassement(classement);
+    }
     // AFFICHAGE GLOBALEEEEE DES CLASSEMENTS SELON LE TYPE DE SPORT 
     @GetMapping("/typeSportId/{typeSportId}/classementGlobal")
     public List<Object> getGlobalClassementsByTypeSportId(@PathVariable Long typeSportId) {
@@ -32,11 +43,7 @@ public class ClassementController {
         return classementService.findByEvenement(evenementId);
     }
 
-    // Add classement
-    @PostMapping("/add")
-    public Classement addClassement(@RequestBody Classement classement) {
-        return classementService.saveClassement(classement);
-    }
+    
     
     @GetMapping("/evenement/sorted/{evenementId}")
     public List<Classement> getSortedClassementsByEvenement(@PathVariable Long evenementId) {
@@ -53,12 +60,7 @@ public class ClassementController {
     public List<Classement> getSortedByButsClassementsByEvenement(@PathVariable Long evenementId) {
         return classementService.findClassementsByEvenementSortedByButs(evenementId);
     }
-    ///// HADA SIMPLIFIé HOWA LI KHDAAAAAAM
-    @GetMapping("/evenement/simplifiedTeams/{evenementId}")
-    public List<ClassementEquipeSimple> getSimpleTeamClassementsByEvenement(@PathVariable Long evenementId) {
-        return classementService.getSimpleClassementEquipeByEvenement(evenementId);
-    }
-   
+ 
 
 
 }
