@@ -23,7 +23,7 @@ public class PromotionService {
     @Autowired
     private ParticipantRepository participantRepository;
 
-    public double appliquerPromotion(Long evenementId, Long participantId, String codePromo) {
+  /*  public double appliquerPromotion(Long evenementId, Long participantId, String codePromo) {
         Evenement evenement = evenementRepository.findById(evenementId)
                 .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
         Participant participant = participantRepository.findById(participantId)
@@ -50,7 +50,7 @@ public class PromotionService {
         double prixAvecRemise = prixInitial - (prixInitial * promotion.getRemise() / 100);
 
         return prixAvecRemise; // Retourner le prix réduit uniquement pour ce participant
-    }
+    } */
 
     // Créer un nouveau code promo
     public Promotion creerPromotion(Promotion promotion) {
@@ -61,6 +61,33 @@ public class PromotionService {
     public List<Promotion> obtenirTousLesPromotions() {
         return promotionRepository.findAll();
     }
+    public double appliquerPromotion(Long evenementId, Long participantId, String codePromo) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement introuvable"));
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new RuntimeException("Participant introuvable"));
 
+        // Find the promotion by code
+        Promotion promotion = promotionRepository.findByCode(codePromo)
+                .orElseThrow(() -> new RuntimeException("Code promo introuvable"));
+
+        // Get the list of promotions already applied by this participant
+        List<Promotion> appliedPromotions = promotionRepository.findByParticipantsId(participantId);
+
+        // Calculate the current price after applying previous promotions
+        double reducedPrice = evenement.getPrix();
+        for (Promotion appliedPromotion : appliedPromotions) {
+            reducedPrice -= (reducedPrice * appliedPromotion.getRemise() / 100);
+        }
+
+        // Apply the new promo code
+        reducedPrice -= (reducedPrice * promotion.getRemise() / 100);
+
+        // Add the current promotion to the participant's applied promotions
+        promotion.getParticipants().add(participant);
+        promotionRepository.save(promotion);
+
+        return reducedPrice;
+    }
    
 }

@@ -1,6 +1,8 @@
 package com.sport.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,7 @@ public class EvenementController {
         evenementService.repartirParticipantsAleatoirement(evenementId);
         return new ResponseEntity<>("Participants répartis aléatoirement", HttpStatus.OK);
     }
-// LISTER TOUS LES EVENEMENTS
+// LISTER TOUS LES EVENEMENTS pour admin
     @GetMapping("/liste")
     public ResponseEntity<List<Evenement>> obtenirTousLesEvenements() {
         List<Evenement> evenements = evenementService.obtenirTousLesEvenements();
@@ -71,7 +73,18 @@ public class EvenementController {
         return new ResponseEntity<>(evenement, HttpStatus.OK);
     } 
 
-
+ 
+    // ceci affichera pour chaque participant connectés les evenements avec leur prix apres reduction
+    
+    @GetMapping("/prixReduits")
+    public ResponseEntity<List<Map<String, Object>>> getEvenementsAvecPrixReduits(@RequestParam Long participantId) {
+        try {
+            List<Map<String, Object>> evenementsAvecPrix = evenementService.obtenirEvenementsAvecPrixReduits(participantId);
+            return ResponseEntity.ok(evenementsAvecPrix);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
  
 
 

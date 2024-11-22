@@ -28,8 +28,36 @@ public class Participant extends User {
     @ManyToMany(mappedBy = "participants")
     private List<Equipe> equipes = new ArrayList<>(); // Nouvelle relation
 
+    @ManyToMany(mappedBy = "participants")
+    private List<Promotion> promotions = new ArrayList<>();
+
 	
-	
+	public Participant(Long id, String name, String email, String password, int telephone,
+			List<Evenement> evenementsParticipes, List<Resultat> resultats, List<Equipe> equipes,
+			List<Promotion> promotions) {
+		super(id, name, email, password, telephone);
+		this.evenementsParticipes = evenementsParticipes;
+		this.resultats = resultats;
+		this.equipes = equipes;
+		this.promotions = promotions;
+	}
+
+	public List<Equipe> getEquipes() {
+		return equipes;
+	}
+
+	public void setEquipes(List<Equipe> equipes) {
+		this.equipes = equipes;
+	}
+
+	public List<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(List<Promotion> promotions) {
+		this.promotions = promotions;
+	}
+
 	public List<Evenement> getEvenementsParticipes() {
 		return evenementsParticipes;
 	}

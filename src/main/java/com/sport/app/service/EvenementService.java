@@ -1,6 +1,9 @@
 package com.sport.app.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,4 +106,37 @@ public class EvenementService {
     }
 
     
+    
+    
+
+ // Méthode pour obtenir tous les événements avec les prix réduits pour un participant spécifique
+    public List<Map<String, Object>> obtenirEvenementsAvecPrixReduits(Long participantId) {
+        List<Evenement> evenements = evenementRepository.findAll();
+        List<Map<String, Object>> evenementsAvecPrix = new ArrayList<>();
+
+        for (Evenement evenement : evenements) {
+            double prixReduit = getPrixWithPromotionsForParticipant(evenement.getId(), participantId);
+            Map<String, Object> evenementDetails = new HashMap<>();
+            evenementDetails.put("evenement", evenement);
+            evenementDetails.put("prixReduit", prixReduit);
+            evenementsAvecPrix.add(evenementDetails);
+        }
+
+        return evenementsAvecPrix;
+    }
+
+    private double getPrixWithPromotionsForParticipant(Long evenementId, Long participantId) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement introuvable"));
+        List<Promotion> appliedPromotions = promotionRepository.findByParticipantsId(participantId);
+        double reducedPrice = evenement.getPrix();
+
+        for (Promotion promotion : appliedPromotions) {
+            if (promotion.getEvenements().contains(evenement)) {
+                reducedPrice -= (reducedPrice * promotion.getRemise() / 100);
+            }
+        }
+
+        return reducedPrice;
+    }
 }
