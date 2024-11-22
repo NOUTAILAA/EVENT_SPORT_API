@@ -37,4 +37,14 @@ public class ResultatController {
     public List<Resultat> obtenirResultatsParEvenement(@PathVariable Long evenementId) {
         return resultatService.obtenirResultatsParEvenement(evenementId);
     }
+    // obtenir le classement des equipes d'un eveneme
+    @GetMapping("/classement/evenement/{evenementId}")
+    public List<Resultat> getClassementParEvenement(@PathVariable Long evenementId) {
+        return resultatService.obtenirClassementParEvenement(evenementId);
+    }
+
+    @GetMapping("/classement/global/type-de-sport/{typeDeSportId}")
+    public List<Resultat> getClassementGlobalParTypeDeSport(@PathVariable Long typeDeSportId) {
+        return resultatService.obtenirClassementGlobalParTypeDeSport(typeDeSportId);
+    }
 }

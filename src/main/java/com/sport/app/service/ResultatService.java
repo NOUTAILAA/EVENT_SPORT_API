@@ -1,5 +1,6 @@
 package com.sport.app.service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,4 +56,52 @@ public class ResultatService {
                 .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
         return evenement.getResultats();
     }
+    
+    
+ // Classement basé sur les résultats pour un événement donné
+    public List<Resultat> obtenirClassementParEvenement(Long evenementId) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+        
+        // Trier les résultats par nombre de buts décroissant, ou par temps croissant
+        return evenement.getResultats().stream()
+                .sorted((r1, r2) -> {
+                    // Comparaison personnalisée selon le type de résultat
+                    if (r1.getNombreButs() != r2.getNombreButs()) {
+                        return Integer.compare(r2.getNombreButs(), r1.getNombreButs()); // Buts décroissants
+                    }
+                    if (r1.getTemps() != null && r2.getTemps() != null) {
+                        return Double.compare(r1.getTemps(), r2.getTemps()); // Temps croissants
+                    }
+                    return 0;
+                })
+                .collect(Collectors.toList());
+    }
+ // Classement global par type de sport
+    public List<Resultat> obtenirClassementGlobalParTypeDeSport(Long typeDeSportId) {
+        // Récupérer tous les événements pour le type de sport donné
+        List<Evenement> evenements = evenementRepository.findByTypeDeSportId(typeDeSportId);
+
+        if (evenements.isEmpty()) {
+            throw new RuntimeException("Aucun événement trouvé pour ce type de sport.");
+        }
+ // Collecter tous les résultats pour ces événements
+    List<Resultat> resultats = evenements.stream()
+            .flatMap(evenement -> evenement.getResultats().stream())
+            .collect(Collectors.toList());
+
+    // Trier les résultats globalement
+    return resultats.stream()
+            .sorted((r1, r2) -> {
+                // Comparaison personnalisée selon le type de résultat
+                if (r1.getNombreButs() != r2.getNombreButs()) {
+                    return Integer.compare(r2.getNombreButs(), r1.getNombreButs()); // Buts décroissants
+                }
+                if (r1.getTemps() != null && r2.getTemps() != null) {
+                    return Double.compare(r1.getTemps(), r2.getTemps()); // Temps croissants
+                }
+                return 0;
+            })
+            .collect(Collectors.toList());
+}
 }
