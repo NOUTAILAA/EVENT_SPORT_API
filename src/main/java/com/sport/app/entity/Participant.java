@@ -71,6 +71,19 @@ public class Participant extends User {
 		super(id, name, email, password, telephone);
 		this.evenementsParticipes = evenementsParticipes;
 	}
+	
+public Participant(Long id, String name, String email, String password, int telephone) {
+		super(id, name, email, password, telephone);
+	}
+
+public Participant(Long id, String name, String email, String password, int telephone, List<Resultat> resultats,
+			List<Equipe> equipes, List<Promotion> promotions) {
+		super(id, name, email, password, telephone);
+		this.resultats = resultats;
+		this.equipes = equipes;
+		this.promotions = promotions;
+	}
+
 public Participant() {}
 public List<Resultat> getResultats() {
     return resultats;

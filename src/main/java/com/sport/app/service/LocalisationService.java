@@ -35,4 +35,8 @@ public class LocalisationService {
     public void deleteLocalisation(Long id) {
         localisationRepository.deleteById(id);
     }
+    public Localisation findById(Long id) {
+        return localisationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Localisation not found with ID: " + id));
+    }
 }

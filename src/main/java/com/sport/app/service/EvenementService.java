@@ -139,4 +139,9 @@ public class EvenementService {
 
         return reducedPrice;
     }
+    
+    
+    public Evenement save(Evenement evenement) {
+        return evenementRepository.save(evenement);
+    }
 }

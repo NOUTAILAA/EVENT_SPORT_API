@@ -1,6 +1,9 @@
 package com.sport.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sport.app.entity.Participant;
+import com.sport.app.repository.ParticipantRepository;
 import com.sport.app.service.ParticipantService;
 
 @RestController
@@ -23,6 +27,8 @@ public class ParticipantController {
 
     @Autowired
     private ParticipantService participantService;
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     @PostMapping("/creer")
     public ResponseEntity<Participant> creerParticipant(@RequestBody Participant participant) {
@@ -37,10 +43,29 @@ public class ParticipantController {
     }
 
     @GetMapping("/liste")
-    public ResponseEntity<List<Participant>> obtenirTousLesParticipants() {
-        List<Participant> participants = participantService.obtenirTousLesParticipants();
-        return new ResponseEntity<>(participants, HttpStatus.OK);
+    public List<Participant> obtenirTousLesParticipants() {
+        List<Participant> participants = participantRepository.findAll();
+        participants.forEach(p -> System.out.println(p.toString())); // Log les données
+        return participants;
     }
+    @GetMapping("/listeSimple")
+    public ResponseEntity<List<Map<String, Object>>> obtenirParticipantsSimples() {
+        List<Participant> participants = participantService.obtenirTousLesParticipants(); // Récupérer tous les participants
+
+        // Transformer la liste des participants en une liste de maps simples
+        List<Map<String, Object>> simpleParticipants = participants.stream().map(participant -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", participant.getId());
+            map.put("name", participant.getName());
+            map.put("email", participant.getEmail());
+            map.put("telephone", participant.getTelephone());
+            map.put("password", participant.getPassword());
+            return map;
+        }).collect(Collectors.toList());
+
+        return new ResponseEntity<>(simpleParticipants, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{participantId}")
     public ResponseEntity<String> supprimerParticipant(@PathVariable Long participantId) {

@@ -51,5 +51,8 @@ public class TypeDeSportService {
             throw new RuntimeException("Type de sport non trouvé");
         }
     }
-
+    public TypeDeSport findById(Long id) {
+        return typeDeSportRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Type de Sport not found with ID: " + id));
+    }
 }
