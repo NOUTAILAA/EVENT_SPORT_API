@@ -46,7 +46,7 @@ public class EvenementService {
 
         // Essayer d'ajouter le participant en respectant les règles définies par l'événement
         if (!evenement.ajouterParticipant(participant)) {
-            throw new RuntimeException("L'événement est complet ou le participant ne peut pas être ajouté.");
+            throw new RuntimeException("L event est complet ou le participant ne peut pas etre ajoute.");
         }
         if (evenement.getParticipants().contains(participant)) {
             throw new RuntimeException("Le participant est déjà inscrit à cet événement.");

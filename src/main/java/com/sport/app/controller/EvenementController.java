@@ -189,7 +189,7 @@ public class EvenementController {
             Map<String, Object> resultatMap = new HashMap<>();
             resultatMap.put("resultatId", resultat.getId());
             resultatMap.put("equipeId", resultat.getEquipe() != null ? resultat.getEquipe().getId() : null);
-            resultatMap.put("participantId", resultat.getParticipant() != null ? resultat.getParticipant().getId() : null);
+            resultatMap.put("participantId", resultat.getParticipant() != null ? resultat.getParticipant().getName() : null);
             resultatMap.put("nombreButs", resultat.getNombreButs());
             resultatMap.put("temps", resultat.getTemps());
             return resultatMap;
