@@ -52,4 +52,13 @@ public class RegleController {
     public void deleteRegle(@PathVariable Long id) {
         regleService.deleteRegle(id);
     }
+    @GetMapping("/typeDeSport/{typeDeSportId}")
+    public List<Regle> getReglesByTypeDeSportId(@PathVariable Long typeDeSportId) {
+        return regleService.getReglesByTypeDeSportId(typeDeSportId);
+    }
+    @GetMapping("/sans-typeDeSport/{typeDeSportId}")
+    public List<Regle> getReglesSansTypeDeSport(@PathVariable Long typeDeSportId) {
+        return regleService.getReglesSansTypeDeSport(typeDeSportId);
+    }
+
 }

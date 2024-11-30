@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,20 @@ public class TypeDeSportController {
     public ResponseEntity<TypeDeSport> mettreAJourTypeDeSport(@PathVariable Long id, @RequestBody TypeDeSport typeDeSport) {
         TypeDeSport typeMisAJour = typeDeSportService.mettreAJourTypeDeSport(id, typeDeSport);
         return new ResponseEntity<>(typeMisAJour, HttpStatus.OK);
+    }
+    @PutMapping("/ajouter-regles/{typeDeSportId}")
+    public ResponseEntity<TypeDeSport> associerReglesAuTypeDeSport(@PathVariable Long typeDeSportId, @RequestBody List<Long> regleIds) {
+        TypeDeSport updatedType = typeDeSportService.ajouterReglesAuTypeDeSport(typeDeSportId, regleIds);
+        return new ResponseEntity<>(updatedType, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{typeDeSportId}/regle/{regleId}")
+    public ResponseEntity<TypeDeSport> dissocierRegleDuTypeDeSport(@PathVariable Long typeDeSportId, @PathVariable Long regleId) {
+        try {
+            TypeDeSport updatedTypeDeSport = typeDeSportService.dissocierRegleDuTypeDeSport(typeDeSportId, regleId);
+            return ResponseEntity.ok(updatedTypeDeSport);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);  // Retourne une erreur si la règle ne peut être dissociée
+        }
     }
 }

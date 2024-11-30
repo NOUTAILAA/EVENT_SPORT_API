@@ -1,6 +1,8 @@
 package com.sport.app.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,13 +20,13 @@ public class TypeDeSport {
     private String nom;
     private int nombreEquipesMax;
     private int nombreParticipantsParEquipe;
-	@ManyToMany
-	@JoinTable(
-			name = "type_sport_regle",
-			joinColumns = @JoinColumn(name = "type_sport_id"),
-			inverseJoinColumns = @JoinColumn(name = "regle_id")
-	)
-	private List<Regle> regles;
+    @ManyToMany
+    @JoinTable(
+            name = "type_sport_regle",
+            joinColumns = @JoinColumn(name = "type_sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "regle_id")
+    )
+    private Set<Regle> regles = new HashSet<>();  // Initialize as a HashSet to avoid null
 
 
 
@@ -73,11 +75,13 @@ public class TypeDeSport {
 	}
     public TypeDeSport() {}
 
-	public List<Regle> getRegles() {
+	public Set<Regle> getRegles() {
 		return regles;
 	}
 
-	public void setRegles(List<Regle> regles) {
+	public void setRegles(Set<Regle> regles) {
 		this.regles = regles;
 	}
+
+
 }

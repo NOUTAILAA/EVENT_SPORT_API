@@ -20,9 +20,9 @@ public class Resultat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int nombreButs; // Nombre de buts pour les sports comme le football
+    private int nombreButs = 0; // Nombre de buts pour les sports comme le football
 
-    private Double temps; // Temps réalisé pour les sports comme le marathon, nullable
+    private Double temps= 0.0; // Temps réalisé pour les sports comme le marathon, nullable
 
     @ManyToOne
     private Equipe equipe; // L'équipe concernée par le résultat

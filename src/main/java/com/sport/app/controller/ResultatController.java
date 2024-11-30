@@ -13,9 +13,18 @@ public class ResultatController {
 
     @Autowired
     private ResultatService resultatService;
+    // ceci est correct
+    @PostMapping("/ajouter/equipe/{evenementId}")
+    public Resultat ajouterResultatEquipe(
+            @PathVariable Long evenementId,
+            @RequestParam Long equipeId,
+            @RequestParam int nombreButs,
+            @RequestParam(required = false) Double temps) {  // temps peut être optionnel
+        return resultatService.ajouterResultatEquipe(evenementId, equipeId, nombreButs, temps);
+    }
 
     // Ajouter un résultat pour une équipe 
-    @PostMapping("/ajouter/equipe")
+    @PostMapping("/equiipe")
     public Resultat ajouterResultatEquipe(
             @RequestParam Long evenementId,
             @RequestParam Long equipeId,

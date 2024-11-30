@@ -39,6 +39,21 @@ public class ResultatService {
         Resultat resultat = new Resultat(nombreButs, 0, equipe, null, evenement);
         return resultatRepository.save(resultat);
     }
+    public Resultat ajouterResultatEquipe(Long evenementId, Long equipeId, int nombreButs, Double temps) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+        Equipe equipe = equipeRepository.findById(equipeId)
+                .orElseThrow(() -> new RuntimeException("Équipe non trouvée"));
+
+        // Vérifier si l'équipe appartient à l'événement
+        if (!evenement.getEquipes().contains(equipe)) {
+            throw new RuntimeException("L'équipe spécifiée n'appartient pas à l'événement donné.");
+        }
+
+        // Créer le résultat
+        Resultat resultat = new Resultat(nombreButs, temps, equipe, null, evenement);
+        return resultatRepository.save(resultat);
+    }
 
     // Ajouter un résultat pour un sport individuel
     public Resultat ajouterResultatParticipant(Long evenementId, Long participantId, double temps) {

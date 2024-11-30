@@ -9,4 +9,7 @@ public interface RegleService {
     Regle createRegle(Regle regle);
     Regle updateRegle(Long id, Regle regle);
     void deleteRegle(Long id);
+    List<Regle> getReglesByTypeDeSportId(Long typeDeSportId);
+  List<Regle> getReglesSansTypeDeSport(Long typeDeSportId) ;
+
 }

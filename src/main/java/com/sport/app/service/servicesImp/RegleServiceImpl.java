@@ -2,19 +2,23 @@ package com.sport.app.service.servicesImp;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sport.app.entity.Regle;
+import com.sport.app.entity.TypeDeSport;
 import com.sport.app.repository.RegleRepository;
+import com.sport.app.repository.TypeDeSportRepository;
 import com.sport.app.service.services.RegleService;
 
 @Service
 public class RegleServiceImpl implements RegleService {
 
     private final RegleRepository regleRepository;
-
+    @Autowired
+    private TypeDeSportRepository typeDeSportRepository;
     @Autowired
     public RegleServiceImpl(RegleRepository regleRepository) {
         this.regleRepository = regleRepository;
@@ -51,4 +55,20 @@ public class RegleServiceImpl implements RegleService {
     public void deleteRegle(Long id) {
         regleRepository.deleteById(id);
     }
+    @Override
+    public List<Regle> getReglesByTypeDeSportId(Long typeDeSportId) {
+        // Fetch rules where the TypeDeSport ID matches
+        return regleRepository.findByTypesDeSportId(typeDeSportId);
+    }
+    public List<Regle> getReglesSansTypeDeSport(Long typeDeSportId) {
+        // Récupérer le type de sport par son ID
+        TypeDeSport typeDeSport = typeDeSportRepository.findById(typeDeSportId)
+                .orElseThrow(() -> new RuntimeException("Type de sport non trouvé"));
+
+        // Filtrer les règles qui ne sont pas associées à ce type de sport
+        return regleRepository.findAll().stream()
+                .filter(regle -> !regle.getTypesDeSport().contains(typeDeSport))
+                .collect(Collectors.toList());
+    }
+
 }

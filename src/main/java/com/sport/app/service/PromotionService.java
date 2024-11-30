@@ -89,5 +89,26 @@ public class PromotionService {
 
         return reducedPrice;
     }
-   
+ // Méthode pour modifier une promotion existante
+    public Promotion modifierPromotion(Long id, Promotion promotion) {
+        // Vérifier si la promotion existe déjà
+        Promotion promotionExistante = promotionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID: " + id));
+
+        // Modifier les champs de la promotion existante
+        promotionExistante.setCode(promotion.getCode());
+        promotionExistante.setRemise(promotion.getRemise());
+
+        // Sauvegarder la promotion mise à jour
+        return promotionRepository.save(promotionExistante);
+    }
+    // Méthode pour supprimer une promotion
+    public void supprimerPromotion(Long id) {
+        // Vérifier si la promotion existe
+        Promotion promotion = promotionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID: " + id));
+        
+        // Supprimer la promotion
+        promotionRepository.delete(promotion);
+    }
 }
