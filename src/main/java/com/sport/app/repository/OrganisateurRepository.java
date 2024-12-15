@@ -7,4 +7,6 @@ import com.sport.app.entity.Organisateur;
 
 @Repository
 public interface OrganisateurRepository extends JpaRepository<Organisateur, Long> {
+    Organisateur findByEmailAndPassword(String email, String password);
+
 }

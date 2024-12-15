@@ -1,17 +1,22 @@
 package com.sport.app.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sport.app.entity.Equipe;
 import com.sport.app.entity.Evenement;
+import com.sport.app.entity.Localisation;
 import com.sport.app.entity.Participant;
 import com.sport.app.entity.Promotion;
+import com.sport.app.entity.Regle;
+import com.sport.app.entity.TypeDeSport;
 import com.sport.app.repository.EquipeRepository;
 import com.sport.app.repository.EvenementRepository;
 import com.sport.app.repository.ParticipantRepository;
@@ -31,7 +36,11 @@ public class EvenementService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Autowired
+    private LocalisationService localisationService;
 
+    @Autowired
+    private TypeDeSportService typeDeSportService;
 
     public Evenement creerEvenement(Evenement evenement) {
         // Logique de création de l'événement
@@ -144,4 +153,77 @@ public class EvenementService {
     public Evenement save(Evenement evenement) {
         return evenementRepository.save(evenement);
     }
+
+    public Evenement mettreAJourEvenement(Long id, Evenement evenementDetails) {
+        System.out.println("Tentative de mise à jour de l'événement avec ID : " + id);
+        Evenement evenementExistant = evenementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Événement introuvable avec l'ID : " + id));
+
+        // Mise à jour des champs simples
+        evenementExistant.setNom(evenementDetails.getNom());
+        evenementExistant.setDate(evenementDetails.getDate());
+        evenementExistant.setPrix(evenementDetails.getPrix());
+
+        // Mise à jour de la localisation à partir de localisationId
+        if (evenementDetails.getLocalisation() != null && evenementDetails.getLocalisation().getId() != null) {
+            Localisation localisation = localisationService.findById(evenementDetails.getLocalisation().getId());
+            evenementExistant.setLocalisation(localisation);
+        }
+
+        // Mise à jour du typeDeSport
+        if (evenementDetails.getTypeDeSport() != null && evenementDetails.getTypeDeSport().getId() != null) {
+            TypeDeSport typeDeSport = typeDeSportService.findById(evenementDetails.getTypeDeSport().getId());
+            evenementExistant.setTypeDeSport(typeDeSport);
+        }
+
+        return evenementRepository.save(evenementExistant);
+    }
+
+    
+    public List<Evenement> obtenirEvenementsNonComplets() {
+        List<Evenement> tousLesEvenements = evenementRepository.findAll();
+        return tousLesEvenements.stream()
+                .filter(evenement -> evenement.getParticipants().size() < evenement.getTypeDeSport().getNombreEquipesMax() * evenement.getTypeDeSport().getNombreParticipantsParEquipe())
+                .collect(Collectors.toList());
+    }
+    public List<Map<String, Object>> obtenirEvenementsNonCompletsEtNonParticipes(Long participantId) {
+        // Récupérer tous les événements
+        List<Evenement> tousLesEvenements = evenementRepository.findAll();
+
+        // Filtrer les événements non complets et auxquels le participant ne participe pas
+        List<Evenement> evenementsFiltres = tousLesEvenements.stream()
+                .filter(evenement -> evenement.getParticipants().size() <
+                        (evenement.getTypeDeSport().getNombreEquipesMax() * evenement.getTypeDeSport().getNombreParticipantsParEquipe())) // Événement non complet
+                .filter(evenement -> evenement.getParticipants().stream()
+                        .noneMatch(participant -> participant.getId().equals(participantId))) // Participant non inscrit
+                .collect(Collectors.toList());
+
+        // Transformer les événements filtrés en une liste d'objets simples (Map)
+        return evenementsFiltres.stream().map(evenement -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", evenement.getId());
+            map.put("nom", evenement.getNom());
+            map.put("date", evenement.getDate());
+            map.put("prix", evenement.getPrix());
+            map.put("typeDeSportId", evenement.getTypeDeSport() != null ? evenement.getTypeDeSport().getId() : null);
+            map.put("localisationId", evenement.getLocalisation() != null ? evenement.getLocalisation().getId() : null);
+            map.put("nombreParticipantsActuels", evenement.getParticipants().size());
+            map.put("nombreParticipantsMax", evenement.getTypeDeSport().getNombreEquipesMax() * evenement.getTypeDeSport().getNombreParticipantsParEquipe());
+
+            // Inclure les règles associées au type de sport
+            if (evenement.getTypeDeSport() != null) {
+                List<String> reglesDescriptions = evenement.getTypeDeSport().getRegles().stream()
+                        .map(Regle::getDescription)
+                        .collect(Collectors.toList());
+                map.put("regles", reglesDescriptions);
+            } else {
+                map.put("regles", Collections.emptyList());
+            }
+
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+
+
 }

@@ -12,4 +12,6 @@ import com.sport.app.entity.Participant;
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 	 @Query("SELECT p.id AS id, p.name AS name, p.email AS email, p.telephone AS telephone, p.password AS password FROM Participant p")
 	    List<Object[]> findAllSimpleParticipants();
+	    Participant findByEmailAndPassword(String email, String password);
+
 }

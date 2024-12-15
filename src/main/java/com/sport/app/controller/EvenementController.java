@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,7 @@ import com.sport.app.service.TypeDeSportService;
 
 @RestController
 @RequestMapping("/evenements")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EvenementController {
 	 @Autowired
 	    private EvenementRepository evenementRepository;
@@ -62,10 +65,11 @@ public class EvenementController {
 
             nouvelEvenement.setLocalisation(localisation);
             nouvelEvenement.setTypeDeSport(typeDeSport);
-
             evenementService.save(nouvelEvenement);
+            System.out.println("Données reçues pour créer un événement : " + nouvelEvenement);
             return new ResponseEntity<>(nouvelEvenement, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -138,7 +142,6 @@ public class EvenementController {
         
         return new ResponseEntity<>(simpleEvenements, HttpStatus.OK);
     }
-
 
 
     /// cas de many to many 
@@ -219,5 +222,49 @@ public class EvenementController {
         evenementService.repartirParticipantsAleatoirement(evenementId);
         return new ResponseEntity<>("Participants répartis aléatoirement", HttpStatus.OK);
     }
-   
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Evenement> mettreAJourEvenement(@PathVariable Long id, @RequestBody Evenement evenementDetails) {
+        System.out.println("Reçu une requête PUT pour mettre à jour l'événement avec ID : " + id);
+        System.out.println("Localisation reçue : " + evenementDetails.getLocalisation());
+        try {
+            Evenement evenementMisAJour = evenementService.mettreAJourEvenement(id, evenementDetails);
+            return new ResponseEntity<>(evenementMisAJour, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            System.err.println("Erreur : " + e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    
+    @GetMapping("/nonComplets")
+    public ResponseEntity<List<Map<String, Object>>> obtenirEvenementsNonComplets() {
+        List<Evenement> evenementsNonComplets = evenementService.obtenirEvenementsNonComplets();
+        List<Map<String, Object>> simpleEvenements = evenementsNonComplets.stream().map(evenement -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", evenement.getId());
+            map.put("nom", evenement.getNom());
+            map.put("date", evenement.getDate());
+            map.put("prix", evenement.getPrix());
+            map.put("typeDeSportId", evenement.getTypeDeSport() != null ? evenement.getTypeDeSport().getId() : null);
+            map.put("localisationId", evenement.getLocalisation() != null ? evenement.getLocalisation().getId() : null);
+
+            map.put("nombreParticipantsActuels", evenement.getParticipants().size());
+            map.put("nombreParticipantsMax", evenement.getTypeDeSport().getNombreEquipesMax() * evenement.getTypeDeSport().getNombreParticipantsParEquipe());
+            return map;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(simpleEvenements, HttpStatus.OK);
+    }
+    @GetMapping("/nonCompletsNonParticipes")
+    public ResponseEntity<List<Map<String, Object>>> obtenirEvenementsNonCompletsEtNonParticipes(
+            @RequestParam Long participantId) {
+        try {
+            List<Map<String, Object>> evenements = evenementService.obtenirEvenementsNonCompletsEtNonParticipes(participantId);
+            return ResponseEntity.ok(evenements);
+        } catch (RuntimeException e) {
+            // Gérer les erreurs, si nécessaire
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 }

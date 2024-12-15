@@ -60,5 +60,9 @@ public class RegleController {
     public List<Regle> getReglesSansTypeDeSport(@PathVariable Long typeDeSportId) {
         return regleService.getReglesSansTypeDeSport(typeDeSportId);
     }
+    @GetMapping("/evenement/{evenementId}")
+    public List<Regle> getReglesByEvenementId(@PathVariable Long evenementId) {
+        return regleService.getReglesByEvenementId(evenementId);
+    }
 
 }

@@ -11,5 +11,6 @@ public interface RegleService {
     void deleteRegle(Long id);
     List<Regle> getReglesByTypeDeSportId(Long typeDeSportId);
   List<Regle> getReglesSansTypeDeSport(Long typeDeSportId) ;
+List<Regle> getReglesByEvenementId(Long evenementId);
 
 }

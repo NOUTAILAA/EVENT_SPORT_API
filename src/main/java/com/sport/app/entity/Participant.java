@@ -32,7 +32,7 @@ public class Participant extends User {
     private List<Promotion> promotions = new ArrayList<>();
 
 	
-	public Participant(Long id, String name, String email, String password, int telephone,
+	public Participant(Long id, String name, String email, String password, Long telephone,
 			List<Evenement> evenementsParticipes, List<Resultat> resultats, List<Equipe> equipes,
 			List<Promotion> promotions) {
 		super(id, name, email, password, telephone);
@@ -66,25 +66,26 @@ public class Participant extends User {
 		this.evenementsParticipes = evenementsParticipes;
 	}
 
-	public Participant(Long id, String name, String email, String password, int telephone,
+	public Participant(Long id, String name, String email, String password, Long telephone,
 			List<Evenement> evenementsParticipes) {
 		super(id, name, email, password, telephone);
 		this.evenementsParticipes = evenementsParticipes;
 	}
 	
-public Participant(Long id, String name, String email, String password, int telephone) {
+public Participant(Long id, String name, String email, String password, Long telephone) {
 		super(id, name, email, password, telephone);
 	}
 
-public Participant(Long id, String name, String email, String password, int telephone, List<Resultat> resultats,
-			List<Equipe> equipes, List<Promotion> promotions) {
-		super(id, name, email, password, telephone);
-		this.resultats = resultats;
-		this.equipes = equipes;
-		this.promotions = promotions;
-	}
 
-public Participant() {}
+
+public Participant(Long id, String name, String email, String password, Long telephone, List<Resultat> resultats,
+		List<Equipe> equipes, List<Promotion> promotions) {
+	super(id, name, email, password, telephone);
+	this.resultats = resultats;
+	this.equipes = equipes;
+	this.promotions = promotions;
+}
+
 public List<Resultat> getResultats() {
     return resultats;
 }
@@ -93,11 +94,11 @@ public void setResultats(List<Resultat> resultats) {
     this.resultats = resultats;
 }
 
-public Participant(Long id, String name, String email, String password, int telephone,
+public Participant(Long id, String name, String email, String password, Long telephone,
 		List<Evenement> evenementsParticipes, List<Resultat> resultats) {
 	super(id, name, email, password, telephone);
 	this.evenementsParticipes = evenementsParticipes;
 	this.resultats = resultats;
 }
-
+public Participant() {}
 }

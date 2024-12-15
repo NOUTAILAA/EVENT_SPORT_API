@@ -1,5 +1,7 @@
 package com.sport.app.service.servicesImp;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,8 +9,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sport.app.entity.Evenement;
 import com.sport.app.entity.Regle;
 import com.sport.app.entity.TypeDeSport;
+import com.sport.app.repository.EvenementRepository;
 import com.sport.app.repository.RegleRepository;
 import com.sport.app.repository.TypeDeSportRepository;
 import com.sport.app.service.services.RegleService;
@@ -70,5 +74,15 @@ public class RegleServiceImpl implements RegleService {
                 .filter(regle -> !regle.getTypesDeSport().contains(typeDeSport))
                 .collect(Collectors.toList());
     }
+    @Autowired
+	private EvenementRepository evenementRepository;
 
+	public List<Regle> getReglesByEvenementId(Long evenementId) {
+	    Evenement evenement = evenementRepository.findById(evenementId)
+	            .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+	    if (evenement.getTypeDeSport() != null) {
+	        return new ArrayList<>(evenement.getTypeDeSport().getRegles());
+	    }
+	    return Collections.emptyList();
+	}
 }

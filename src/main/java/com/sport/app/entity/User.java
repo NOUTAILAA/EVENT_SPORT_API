@@ -16,15 +16,8 @@ public abstract class User {
     private String name;
     private String email;
     private String password ; 
-    private int telephone ;
-	public User(Long id, String name, String email, String password, int telephone) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.telephone = telephone;
-	}
+    private Long telephone ;
+
 	public Long getId() {
 		return id;
 	}
@@ -49,11 +42,19 @@ public abstract class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getTelephone() {
+	public Long getTelephone() {
 		return telephone;
 	}
-	public void setTelephone(int telephone) {
+	public void setTelephone(Long telephone) {
+		this.telephone = telephone;
+	}
+	public User(Long id, String name, String email, String password, Long telephone) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
 		this.telephone = telephone;
 	} 
-    public User() {}
+	public User() {}
 }

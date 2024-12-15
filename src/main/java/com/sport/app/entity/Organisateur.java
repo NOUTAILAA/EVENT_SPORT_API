@@ -20,11 +20,11 @@ public class Organisateur extends User {
 		this.evenementsOrganises = evenementsOrganises;
 	}
 
-	public Organisateur(Long id, String name, String email, String password, int telephone,
+	public Organisateur(Long id, String name, String email, String password, Long telephone,
 			List<Evenement> evenementsOrganises) {
 		super(id, name, email, password, telephone);
 		this.evenementsOrganises = evenementsOrganises;
 	}
-
-public Organisateur() {}
+	public Organisateur(){}
+	
 }
